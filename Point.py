@@ -20,3 +20,6 @@ class Point:
 
     def copy(self):
         return Point(self.x, self.y)
+
+    def __str__(self):
+        return "{x:"+str(self.x)+", y:"+str(self.y)+"}"
