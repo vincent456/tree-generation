@@ -8,7 +8,7 @@ from Point import Point
 
 
 class Tree:
-    def __init__(self, leaves: List["Leaf.Leaf"], rootpos, max_dist: float):
+    def __init__(self):
         self.leaves: List["Leaf.Leaf"] = leaves
         self.direction = Point(0, 1)
         self.root = Branch(None, rootpos, self.direction)

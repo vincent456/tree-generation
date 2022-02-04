@@ -9,10 +9,19 @@ class Branch:
         self.position: Point.Point = position
         self.parent = parent
         self.direction: Point.Point = direction
+        self.origDir: Point.Point = self.direction.copy()
+        self.count: int = 0
+        self.len: int = 5
+
+    def reset(self):
+        self.direction = self.origDir.copy()
+        self.count = 0
 
     def next(self):
-        next_position: Point.Point = self.position + self.direction
-        next_branch = Branch(self, next_position, self.direction.copy())
+        #next_position: Point.Point = self.position + self.direction
+        next_dir = self.len*self.direction
+        next_pos = self.position + next_dir
+        next_branch = Branch(self, next_pos, self.direction.copy())
         return next_branch
 
     def show(self, im: numpy.ndarray):

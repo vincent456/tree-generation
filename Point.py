@@ -23,3 +23,6 @@ class Point:
 
     def __str__(self):
         return "{x:"+str(self.x)+", y:"+str(self.y)+"}"
+
+    def __rmul__(self, other):
+        return Point(other*self.x, other*self.y)
