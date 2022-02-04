@@ -8,26 +8,26 @@ from Point import Point
 
 
 class Tree:
-    def __init__(self):
+    def __init__(self, glob):
         self.leaves: List[Leaf] = []
         self.branches: List[Branch] = []
 
-        global leaves
-        for leaf in leaves:
+        #global leaves
+        for leaf in glob["leaves"]:
             self.leaves.append(leaf)
-        global width
-        global height
-        pos = Point(width/2, 0)
+        #global width
+        #global height
+        pos = Point(glob["width"]/2, 0)
         dir = Point(0, 1)
         root = Branch(None, pos, dir)
         self.branches.append(root)
         current = root
         found = False
-        global max_dist
+        #global max_dist
         while not found:
             for leaf in self.leaves:
                 d = Point.distance(current,leaf.pos)
-                if d < max_dist:
+                if d < glob["max_dist"]:
                     found = True
 
             if not found:
@@ -35,15 +35,15 @@ class Tree:
                 current = branch
                 self.branches.append(current)
 
-    def grow(self):
-        global max_distance
+    def grow(self, glob):
+        #global max_distance
         for leaf in self.leaves:
             closest_branch = None
-            record = max_distance
-            global min_distance
+            record = glob["max_distance"]
+            #global min_distance
             for branch in self.branches:
                 d = Point.distance(leaf.pos, branch.position)
-                if d < min_distance:
+                if d < glob["min_distance"]:
                     leaf.reached = True
                     closest_branch = None
                     break

@@ -7,19 +7,24 @@ from Point import Point
 from Leaf import Leaf
 
 
-min_dist = 10
-max_dist = 10
-tree = None
-
+glob = {
+    "min_dist": 10,
+    "max_dist": 10,
+    "tree": None,
+    "leaves": [],
+    "width": None,
+    "height": None
+}
 
 def main():
     im = cv2.imread("Bored-Ape-NFT-Bored-Ape-Yacht-Club-NFT-Culture.jpg")
     cv2.imshow("window", im)
     cv2.waitKey(0)
 
-    global tree
     w, h, d = get_dimensions(im)
-    tree = Tree([], Point(w/2, h), max_dist)
+    glob["width"] = w
+    glob["height"] = h
+    glob["tree"] = Tree(glob)
     # tree.root.position = Point(w / 2, h)
     print("traitement")
     scatter(im, 0.001)
@@ -28,15 +33,15 @@ def main():
     cv2.waitKey(0)
 
     print("traitement")
-    tree.after_init()
-    tree.show(im)
+    glob["tree"].after_init()
+    glob["tree"].show(im)
 
     print("prêt")
     cv2.waitKey(0)
 
     while True:
         cv2.imshow("window", im)
-        tree.grow()
+        glob["tree"].grow()
         o = cv2.waitKey(0)
         print(o)
         if o == 27: #escape
@@ -49,7 +54,7 @@ def scatter(im: ndarray, am):
     for y in range(h):
         for x in range(w):
             if is_color(im, y, x, 255, 255, 255) and random.random() < am:
-                tree.leaves.append(Leaf(Point(x, y-50)))
+                glob["leaves"].append(Leaf(Point(x, y-50)))
                 set_color(im, y, x, 255, 0, 0)
 
 
