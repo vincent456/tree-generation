@@ -1,6 +1,6 @@
 import numpy
 
-import Leaf
+from Leaf import Leaf
 from typing import List
 from Branch import Branch
 
@@ -9,31 +9,76 @@ from Point import Point
 
 class Tree:
     def __init__(self):
-        self.leaves: List["Leaf.Leaf"] = leaves
-        self.direction = Point(0, 1)
-        self.root = Branch(None, rootpos, self.direction)
+        self.leaves: List[Leaf] = []
         self.branches: List[Branch] = []
-        self.branches.append(self.root)
-        self.max_dist = max_dist
 
-        #self.after_init()
-
-    def after_init(self):
+        global leaves
+        for leaf in leaves:
+            self.leaves.append(leaf)
+        global width
+        global height
+        pos = Point(width/2, 0)
+        dir = Point(0, 1)
+        root = Branch(None, pos, dir)
+        self.branches.append(root)
+        current = root
         found = False
-        current: Branch = self.root
+        global max_dist
         while not found:
             for leaf in self.leaves:
-                d = Point.distance(current.position, leaf.pos)
-                if d < self.max_dist:
+                d = Point.distance(current,leaf.pos)
+                if d < max_dist:
                     found = True
-        if not found:
-            branch = current.next()
-            current = branch
-            self.branches.append(current)
-            print("branche crée",current)
 
-    def show(self, im: numpy.ndarray):
+            if not found:
+                branch = current.next()
+                current = branch
+                self.branches.append(current)
+
+    def grow(self):
+        global max_distance
+        for leaf in self.leaves:
+            closest_branch = None
+            record = max_distance
+            global min_distance
+            for branch in self.branches:
+                d = Point.distance(leaf.pos, branch.position)
+                if d < min_distance:
+                    leaf.reached = True
+                    closest_branch = None
+                    break
+                elif d < record:
+                    closest_branch = branch
+                    record = d
+
+        if closest_branch is not None:
+            new_dir = leaf.pos - closest_branch.position
+            new_dir = new_dir.normalize()
+            closest_branch.direction = closest_branch.direction + new_dir
+            closest_branch.count = closest_branch.count + 1
+
+
+        #remove reached leaves
+        arr = []
+        for i in range(len(self.leaves)):
+            if not self.leaves[i].reached:
+                arr.append(self.leaves[i])
+
+        self.leaves = arr
+
+        arr = self.branches
+        for i in range(len(self.branches)):
+            branch = self.branches[i]
+            if branch.count > 0:
+                branch.direction = branch.direction / (branch.count + 1)
+                arr.append(branch.next())
+                branch.reset()
+
+        self.branches = arr
+
+    def show(self, im):
         for leaf in self.leaves:
             leaf.show(im)
+
         for branch in self.branches:
             branch.show(im)

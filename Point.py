@@ -26,3 +26,15 @@ class Point:
 
     def __rmul__(self, other):
         return Point(other*self.x, other*self.y)
+
+    def __sub__(self, other):
+        return Point(self.x-other.x, self.y-other.y)
+
+    def __rsub__(self, other):
+        return Point(other.x-self.x, other.y-self.y)
+
+    def normalize(self):
+        return Point(self.x / Point.norm(self), self.y / Point.norm(self))
+
+    def __divmod__(self, other):
+        return Point(self.x / other, self.y / other)

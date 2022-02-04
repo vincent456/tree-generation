@@ -36,6 +36,7 @@ def main():
 
     while True:
         cv2.imshow("window", im)
+        tree.grow()
         o = cv2.waitKey(0)
         print(o)
         if o == 27: #escape
