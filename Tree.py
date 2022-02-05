@@ -17,8 +17,8 @@ class Tree:
             self.leaves.append(leaf)
         #global width
         #global height
-        pos = Point(glob["width"]/2, 0)
-        dir = Point(0, 1)
+        pos = Point(glob["width"]/2, glob["height"])
+        dir = Point(0, -1)
         root = Branch(None, pos, dir)
         self.branches.append(root)
         current = root
@@ -26,7 +26,7 @@ class Tree:
         #global max_dist
         while not found:
             for leaf in self.leaves:
-                d = Point.distance(current,leaf.pos)
+                d = Point.distance(current.position , leaf.pos)
                 if d < glob["max_dist"]:
                     found = True
 
@@ -37,13 +37,14 @@ class Tree:
 
     def grow(self, glob):
         #global max_distance
+
         for leaf in self.leaves:
             closest_branch = None
-            record = glob["max_distance"]
+            record = glob["max_dist"]
             #global min_distance
             for branch in self.branches:
                 d = Point.distance(leaf.pos, branch.position)
-                if d < glob["min_distance"]:
+                if d < glob["min_dist"]:
                     leaf.reached = True
                     closest_branch = None
                     break
@@ -51,11 +52,11 @@ class Tree:
                     closest_branch = branch
                     record = d
 
-        if closest_branch is not None:
-            new_dir = leaf.pos - closest_branch.position
-            new_dir = new_dir.normalize()
-            closest_branch.direction = closest_branch.direction + new_dir
-            closest_branch.count = closest_branch.count + 1
+            if closest_branch is not None:
+                new_dir = leaf.pos - closest_branch.position
+                new_dir = new_dir.normalize()
+                closest_branch.direction = closest_branch.direction + new_dir
+                closest_branch.count = closest_branch.count + 1
 
 
         #remove reached leaves
@@ -77,8 +78,8 @@ class Tree:
         self.branches = arr
 
     def show(self, im):
-        for leaf in self.leaves:
-            leaf.show(im)
+        #for leaf in self.leaves:
+         #   leaf.show(im)
 
         for branch in self.branches:
             branch.show(im)

@@ -36,5 +36,5 @@ class Point:
     def normalize(self):
         return Point(self.x / Point.norm(self), self.y / Point.norm(self))
 
-    def __divmod__(self, other):
+    def __truediv__(self, other):
         return Point(self.x / other, self.y / other)

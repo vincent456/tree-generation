@@ -9,7 +9,7 @@ from Leaf import Leaf
 
 glob = {
     "min_dist": 10,
-    "max_dist": 10,
+    "max_dist": 50,
     "tree": None,
     "leaves": [],
     "width": None,
@@ -24,28 +24,28 @@ def main():
     w, h, d = get_dimensions(im)
     glob["width"] = w
     glob["height"] = h
-    glob["tree"] = Tree(glob)
+    glob["height"] = h
     # tree.root.position = Point(w / 2, h)
     print("traitement")
-    scatter(im, 0.001)
+    scatter(im, 0.005)
+    glob["tree"] = Tree(glob)
+    glob["tree"].show(im)
     cv2.imshow("window", im)
     print("prêt")
     cv2.waitKey(0)
 
-    print("traitement")
-    glob["tree"].after_init()
-    glob["tree"].show(im)
-
-    print("prêt")
-    cv2.waitKey(0)
-
     while True:
+
+        glob["tree"].grow(glob)
+        glob["tree"].show(im)
         cv2.imshow("window", im)
-        glob["tree"].grow()
         o = cv2.waitKey(0)
         print(o)
         if o == 27: #escape
             break
+        if o == 115: #s
+            cv2.imwrite("render.jpg", im)
+            print("saved")
     print("finished")
 
 
@@ -54,8 +54,8 @@ def scatter(im: ndarray, am):
     for y in range(h):
         for x in range(w):
             if is_color(im, y, x, 255, 255, 255) and random.random() < am:
-                glob["leaves"].append(Leaf(Point(x, y-50)))
-                set_color(im, y, x, 255, 0, 0)
+                glob["leaves"].append(Leaf(Point(x, y)))
+                #set_color(im, y, x, 255, 0, 0)
 
 
 def get_dimensions(im: ndarray):

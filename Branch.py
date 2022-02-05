@@ -30,7 +30,7 @@ class Branch:
                                int(self.position.y)),
                           (int(self.parent.position.x),
                            int(self.parent.position.y)),
-                          (0, 0, 255), 5)
+                          (0, 0, 255), 2)
 
     def __str__(self):
         return "parent:"+str(self.parent.position)+", position:"+str(self.position)
